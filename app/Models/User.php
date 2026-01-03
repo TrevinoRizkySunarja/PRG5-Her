@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    //  Relationship: a user can upload many cards
+    public function cards()
+    {
+        return $this->hasMany(\App\Models\Card::class);
+    }
 }
