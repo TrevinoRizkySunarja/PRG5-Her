@@ -22,7 +22,7 @@
 
             {{-- Search + filter --}}
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
-                <form method="GET" action="{{ route('cards.index') }}" class="flex flex-col md:flex-row gap-3">
+                <form method="GET" action="{{ route('cards.index') }}" class="flex flex-col md:flex-row gap-3 items-center">
                     <input
                         type="text"
                         name="search"
@@ -36,7 +36,7 @@
                         class="w-full md:w-48 rounded-md border-gray-700 bg-gray-900 text-gray-100"
                     >
                         <option value="all" {{ request('rarity', 'all') === 'all' ? 'selected' : '' }}>
-                        Alle rarities
+                            Alle rarities
                         </option>
                         @foreach ($rarities as $r)
                             <option value="{{ $r }}" {{ request('rarity', 'all') === $r ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
 
                     <button
                         type="submit"
-                        class="rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600"
+                        class="w-full md:w-auto rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600"
                     >
                         Zoeken
                     </button>
@@ -58,22 +58,22 @@
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-100">
                     <div class="overflow-x-auto">
-                        <table class="min-w-full text-left">
+                        <table class="min-w-full text-left table-auto">
                             <thead class="text-gray-300 border-b border-gray-700">
                             <tr>
-                                <th class="py-3 pr-4">IMG</th>
-                                <th class="py-3 pr-4">NAAM</th>
-                                <th class="py-3 pr-4">RARITY</th>
-                                <th class="py-3 pr-4">OMSCHRIJVING</th>
-                                <th class="py-3 pr-4">OWNER</th>
-                                <th class="py-3 pr-4">ACTIES</th>
+                                <th class="py-3 px-3 w-20">IMG</th>
+                                <th class="py-3 px-3">NAAM</th>
+                                <th class="py-3 px-3 w-28">RARITY</th>
+                                <th class="py-3 px-3">OMSCHRIJVING</th>
+                                <th class="py-3 px-3 w-32">OWNER</th>
+                                <th class="py-3 px-3 w-24 text-right">ACTIES</th>
                             </tr>
                             </thead>
 
                             <tbody class="divide-y divide-gray-700">
                             @forelse ($cards as $card)
-                                <tr>
-                                    <td class="py-3 pr-4">
+                                <tr class="align-middle">
+                                    <td class="py-3 px-3">
                                         @if ($card->image_path)
                                             <img
                                                 src="{{ asset('storage/' . $card->image_path) }}"
@@ -84,13 +84,18 @@
                                             <div class="w-12 h-12 bg-gray-900 rounded border border-gray-700"></div>
                                         @endif
                                     </td>
-                                    <td class="py-3 pr-4 font-semibold">{{ $card->name }}</td>
-                                    <td class="py-3 pr-4">{{ $card->rarity }}</td>
-                                    <td class="py-3 pr-4">
-                                        {{ \Illuminate\Support\Str::limit($card->description, 30) }}
+
+                                    <td class="py-3 px-3 font-semibold">{{ $card->name }}</td>
+
+                                    <td class="py-3 px-3">{{ $card->rarity }}</td>
+
+                                    <td class="py-3 px-3">
+                                        {{ \Illuminate\Support\Str::limit($card->description, 40) }}
                                     </td>
-                                    <td class="py-3 pr-4">{{ $card->user?->name ?? '-' }}</td>
-                                    <td class="py-3 pr-4">
+
+                                    <td class="py-3 px-3">{{ $card->user?->name ?? '-' }}</td>
+
+                                    <td class="py-3 px-3 text-right">
                                         <a href="{{ route('cards.show', $card) }}" class="underline hover:text-gray-300">
                                             Details
                                         </a>
@@ -98,7 +103,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-6 text-gray-300">
+                                    <td colspan="6" class="py-6 px-3 text-gray-300">
                                         Geen cards gevonden.
                                     </td>
                                 </tr>
