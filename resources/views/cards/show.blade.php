@@ -24,8 +24,14 @@
 
                     <div class="flex-1">
                         <h1 class="text-2xl font-bold mb-2">{{ $card->name }}</h1>
-                        <p class="text-gray-300 mb-2"><span class="font-semibold">Rarity:</span> {{ $card->rarity }}</p>
-                        <p class="text-gray-300 mb-2"><span class="font-semibold">Owner:</span> {{ $card->user?->name ?? '-' }}</p>
+
+                        <p class="text-gray-300 mb-2">
+                            <span class="font-semibold">Rarity:</span> {{ $card->rarity }}
+                        </p>
+
+                        <p class="text-gray-300 mb-2">
+                            <span class="font-semibold">Owner:</span> {{ $card->user?->name ?? '-' }}
+                        </p>
 
                         @if ($card->description)
                             <div class="mt-4">
@@ -39,6 +45,27 @@
                                 ← Terug naar overzicht
                             </a>
                         </div>
+
+                        @auth
+                            @can('update', $card)
+                                <div class="mt-6 flex gap-4">
+                                    <a href="{{ route('cards.edit', $card) }}" class="underline hover:text-gray-300">
+                                        Edit
+                                    </a>
+
+                                    <form method="POST" action="{{ route('cards.destroy', $card) }}"
+                                          onsubmit="return confirm('Weet je zeker dat je deze card wilt verwijderen?');">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="underline hover:text-gray-300">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            @endcan
+                        @endauth
+
                     </div>
                 </div>
             </div>

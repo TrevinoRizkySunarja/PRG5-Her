@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCardRequest;
 use App\Models\Card;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class CardController extends Controller
 {
@@ -74,4 +76,51 @@ class CardController extends Controller
 
         return redirect()->route('cards.show', $card);
     }
+    public function edit(Card $card)
+    {
+        $this->authorize('update', $card);
+
+        return view('cards.edit', [
+            'card' => $card,
+            'rarities' => ['Common', 'Rare', 'Legendary'],
+        ]);
+    }
+
+    public function update(StoreCardRequest $request, Card $card)
+    {
+        $this->authorize('update', $card);
+
+        $data = $request->validated();
+
+        // If a new image is uploaded, replace the old image file
+        if ($request->hasFile('image')) {
+            if ($card->image_path) {
+                Storage::disk('public')->delete($card->image_path);
+            }
+            $card->image_path = $request->file('image')->store('cards', 'public');
+        }
+
+        $card->name = $data['name'];
+        $card->rarity = $data['rarity'];
+        $card->description = $data['description'] ?? null;
+        $card->save();
+
+        return redirect()->route('cards.show', $card);
+    }
+
+    public function destroy(Card $card)
+    {
+        $this->authorize('delete', $card);
+
+        // Delete the image file first (if it exists), then delete the database record
+        if ($card->image_path) {
+            Storage::disk('public')->delete($card->image_path);
+        }
+
+        $card->delete();
+
+        return redirect()->route('cards.index');
+    }
+
+
 }
