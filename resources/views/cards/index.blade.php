@@ -8,6 +8,18 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            @if (Route::has('login'))
+                <div class="flex justify-end mb-4">
+                    @auth
+                        <a href="{{ route('cards.create') }}"
+                           class="rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600">
+                            + Upload Card
+                        </a>
+                    @endauth
+                </div>
+            @endif
+
+
             {{-- Search + filter --}}
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
                 <form method="GET" action="{{ route('cards.index') }}" class="flex flex-col md:flex-row gap-3">
