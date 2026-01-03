@@ -14,7 +14,7 @@
                     <input
                         type="text"
                         name="search"
-                        value="{{ $search }}"
+                        value="{{ request('search') }}"
                         placeholder="Zoek op naam of beschrijving..."
                         class="w-full md:flex-1 rounded-md border-gray-700 bg-gray-900 text-gray-100"
                     />
@@ -23,11 +23,11 @@
                         name="rarity"
                         class="w-full md:w-48 rounded-md border-gray-700 bg-gray-900 text-gray-100"
                     >
-                        <option value="all" {{ $selectedRarity === 'all' ? 'selected' : '' }}>
-                            Alle rarities
+                        <option value="all" {{ request('rarity', 'all') === 'all' ? 'selected' : '' }}>
+                        Alle rarities
                         </option>
                         @foreach ($rarities as $r)
-                            <option value="{{ $r }}" {{ $selectedRarity === $r ? 'selected' : '' }}>
+                            <option value="{{ $r }}" {{ request('rarity', 'all') === $r ? 'selected' : '' }}>
                                 {{ $r }}
                             </option>
                         @endforeach
