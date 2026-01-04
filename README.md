@@ -35,5 +35,5 @@ Als je ingelogd bent kun je kaarten uploaden (met afbeelding). De eigenaar kan z
 ---
 
 Owner Inlog voor Adminrechten:
-- email:trev@gmail.com
+- email: trev@gmail.com
 - wachtwoord: 123123123
