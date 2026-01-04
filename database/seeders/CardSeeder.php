@@ -22,10 +22,10 @@ class CardSeeder extends Seeder
 
         // Optional: extra users for "owner" column variety
         $qwe = User::firstOrCreate(
-            ['email' => 'qwe@demo.nl'],
+            ['email' => 'admin@demo.nl'],
             [
-                'name' => 'qwe',
-                'password' => Hash::make('password'),
+                'name' => 'Admin',
+                'password' => Hash::make('admin12345'),
             ]
         );
 
