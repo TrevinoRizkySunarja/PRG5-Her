@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Card extends Model
 {
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+
     protected $fillable = [
         'user_id',
         'name',

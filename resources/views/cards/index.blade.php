@@ -35,6 +35,7 @@
                         <option value="all" {{ request('rarity', 'all') === 'all' ? 'selected' : '' }}>
                             Alle rarities
                         </option>
+
                         @foreach ($rarities as $r)
                             <option value="{{ $r }}" {{ request('rarity', 'all') === $r ? 'selected' : '' }}>
                                 {{ $r }}
@@ -63,7 +64,8 @@
                                 <th class="py-3 px-3 w-28">RARITY</th>
                                 <th class="py-3 px-3">OMSCHRIJVING</th>
                                 <th class="py-3 px-3 w-32">OWNER</th>
-                                <th class="py-3 px-3 w-24 text-right">ACTIES</th>
+                                <th class="py-3 px-3 w-24">STATUS</th>
+                                <th class="py-3 px-3 w-40 text-right">ACTIES</th>
                             </tr>
                             </thead>
 
@@ -98,15 +100,40 @@
                                         {{ $card->user?->name ?? '-' }}
                                     </td>
 
+                                    <td class="py-3 px-3">
+                                        @if ($card->is_active)
+                                            <span class="rounded px-2 py-1 text-xs bg-green-900/30 border border-green-700 text-green-200">
+                                                    Active
+                                                </span>
+                                        @else
+                                            <span class="rounded px-2 py-1 text-xs bg-red-900/30 border border-red-700 text-red-200">
+                                                    Inactive
+                                                </span>
+                                        @endif
+                                    </td>
+
                                     <td class="py-3 px-3 text-right">
-                                        <a href="{{ route('cards.show', $card) }}" class="underline hover:text-gray-300">
-                                            Details
-                                        </a>
+                                        <div class="flex justify-end gap-3">
+                                            <a href="{{ route('cards.show', $card) }}" class="underline hover:text-gray-300">
+                                                Details
+                                            </a>
+
+                                            @auth
+                                                @can('toggleStatus', $card)
+                                                    <form method="POST" action="{{ route('cards.toggle-status', $card) }}">
+                                                        @csrf
+                                                        <button type="submit" class="underline hover:text-gray-300">
+                                                            Toggle
+                                                        </button>
+                                                    </form>
+                                                @endcan
+                                            @endauth
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-6 px-3 text-gray-300">
+                                    <td colspan="7" class="py-6 px-3 text-gray-300">
                                         Geen cards gevonden.
                                     </td>
                                 </tr>

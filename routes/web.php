@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CardStatusController;
+use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
     return redirect()->route('cards.index');
@@ -23,6 +28,18 @@ Route::middleware('auth')->group(function () {
 
 // This must be last, otherwise it eats "/cards/create"
 Route::get('/cards/{card}', [CardController::class, 'show'])->name('cards.show');
+
+// Admin only
+Route::middleware(['auth', EnsureAdmin::class])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+});
+
+// Status toggle (POST) - separate controller action
+Route::middleware('auth')->group(function () {
+    Route::post('/cards/{card}/toggle-status', [CardStatusController::class, 'toggle'])
+        ->name('cards.toggle-status');
+});
+
 
 
 Route::middleware('auth')->group(function () {

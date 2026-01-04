@@ -7,15 +7,18 @@ use App\Models\User;
 
 class CardPolicy
 {
-    // Allow update only when the logged-in user owns the card
     public function update(User $user, Card $card): bool
     {
-        return $card->user_id === $user->id;
+        return $user->is_admin || $card->user_id === $user->id;
     }
 
-    // Allow delete only when the logged-in user owns the card
     public function delete(User $user, Card $card): bool
     {
-        return $card->user_id === $user->id;
+        return $user->is_admin || $card->user_id === $user->id;
+    }
+
+    public function toggleStatus(User $user, Card $card): bool
+    {
+        return $user->is_admin || $card->user_id === $user->id;
     }
 }
