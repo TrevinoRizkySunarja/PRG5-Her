@@ -44,21 +44,56 @@ class CardController extends Controller
     {
         $card->load('user');
 
+        // Diepere validatie: track unieke "details views" per user
+        if (auth()->check()) {
+            \Illuminate\Support\Facades\DB::table('card_views')->updateOrInsert(
+                [
+                    'user_id' => auth()->id(),
+                    'card_id' => $card->id,
+                ],
+                [
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+        }
+
         return view('cards.show', [
             'card' => $card,
         ]);
     }
 
+
     public function create()
     {
+        $viewsCount = \Illuminate\Support\Facades\DB::table('card_views')
+            ->where('user_id', auth()->id())
+            ->count();
+
+        if ($viewsCount < 3) {
+            return redirect()->route('cards.index')
+                ->with('error', 'Je mag pas een card uploaden nadat je minimaal 3 verschillende cards hebt bekeken (Details).');
+        }
+
         return view('cards.create', [
             'rarities' => ['Common', 'Rare', 'Legendary'],
         ]);
     }
 
+
     public function store(StoreCardRequest $request)
     {
         $data = $request->validated();
+
+        $viewsCount = \Illuminate\Support\Facades\DB::table('card_views')
+            ->where('user_id', $request->user()->id)
+            ->count();
+
+        if ($viewsCount < 3) {
+            return redirect()->route('cards.index')
+                ->with('error', 'Je mag pas een card uploaden nadat je minimaal 3 verschillende cards hebt bekeken (Details).');
+        }
+
 
         $imagePath = null;
         if ($request->hasFile('image')) {

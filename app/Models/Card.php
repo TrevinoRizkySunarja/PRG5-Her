@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Card extends Model
 {
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
@@ -18,9 +15,14 @@ class Card extends Model
         'rarity',
         'description',
         'image_path',
+        'is_active',
     ];
 
-    public function user(): BelongsTo
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
