@@ -74,7 +74,9 @@ class CardController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('cards.show', $card);
+        return redirect()->route('cards.show', $card)
+            ->with('success', 'Card uploaded successfully.');
+
     }
     public function edit(Card $card)
     {
@@ -105,7 +107,9 @@ class CardController extends Controller
         $card->description = $data['description'] ?? null;
         $card->save();
 
-        return redirect()->route('cards.show', $card);
+        return redirect()->route('cards.show', $card)
+            ->with('success', 'Card updated successfully.');
+
     }
 
     public function destroy(Card $card)
@@ -119,7 +123,9 @@ class CardController extends Controller
 
         $card->delete();
 
-        return redirect()->route('cards.index');
+        return redirect()->route('cards.index')
+            ->with('success', 'Card deleted successfully.');
+
     }
 
 
