@@ -8,18 +8,6 @@ Route::get('/', function () {
     return redirect()->route('cards.index');
 });
 
-Route::get('/_session-test', function () {
-    // Write something to the session
-    session(['ping' => 'pong']);
-
-    // Read it back
-    return response()->json([
-        'session_id' => session()->getId(),
-        'ping' => session('ping'),
-        'user' => auth()->check() ? auth()->user()->email : null,
-    ]);
-});
-
 
 Route::get('/cards', [CardController::class, 'index'])->name('cards.index');
 

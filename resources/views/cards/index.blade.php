@@ -1,24 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-200 leading-tight">
-            Pokémon Cards
-        </h2>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <h2 class="font-semibold text-xl text-gray-200 leading-tight">
+                Pokémon Cards
+            </h2>
+
+            @auth
+                <a href="{{ route('cards.create') }}"
+                   class="rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600 w-full md:w-auto text-center">
+                    Upload Card
+                </a>
+            @endauth
+        </div>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            @if (Route::has('login'))
-                <div class="flex justify-end mb-4">
-                    @auth
-                        <a href="{{ route('cards.create') }}"
-                           class="rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600">
-                            + Upload Card
-                        </a>
-                    @endauth
-                </div>
-            @endif
-
 
             {{-- Search + filter --}}
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
@@ -38,6 +35,7 @@
                         <option value="all" {{ request('rarity', 'all') === 'all' ? 'selected' : '' }}>
                             Alle rarities
                         </option>
+
                         @foreach ($rarities as $r)
                             <option value="{{ $r }}" {{ request('rarity', 'all') === $r ? 'selected' : '' }}>
                                 {{ $r }}
@@ -85,15 +83,21 @@
                                         @endif
                                     </td>
 
-                                    <td class="py-3 px-3 font-semibold">{{ $card->name }}</td>
+                                    <td class="py-3 px-3 font-semibold">
+                                        {{ $card->name }}
+                                    </td>
 
-                                    <td class="py-3 px-3">{{ $card->rarity }}</td>
+                                    <td class="py-3 px-3">
+                                        {{ $card->rarity }}
+                                    </td>
 
                                     <td class="py-3 px-3">
                                         {{ \Illuminate\Support\Str::limit($card->description, 40) }}
                                     </td>
 
-                                    <td class="py-3 px-3">{{ $card->user?->name ?? '-' }}</td>
+                                    <td class="py-3 px-3">
+                                        {{ $card->user?->name ?? '-' }}
+                                    </td>
 
                                     <td class="py-3 px-3 text-right">
                                         <a href="{{ route('cards.show', $card) }}" class="underline hover:text-gray-300">
