@@ -19,7 +19,7 @@
 
             {{-- Search + filter --}}
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6">
-                <form method="GET" action="{{ route('cards.index') }}" class="flex flex-col md:flex-row gap-3 items-center">
+                <form method="GET" action="{{ route('cards.index') }}" class="flex flex-col md:flex-row gap-3 md:items-center">
                     <input
                         type="text"
                         name="search"
@@ -30,12 +30,11 @@
 
                     <select
                         name="rarity"
-                        class="w-full md:w-48 rounded-md border-gray-700 bg-gray-900 text-gray-100"
+                        class="w-full md:w-56 rounded-md border-gray-700 bg-gray-900 text-gray-100"
                     >
                         <option value="all" {{ request('rarity', 'all') === 'all' ? 'selected' : '' }}>
                             Alle rarities
                         </option>
-
                         @foreach ($rarities as $r)
                             <option value="{{ $r }}" {{ request('rarity', 'all') === $r ? 'selected' : '' }}>
                                 {{ $r }}
@@ -45,7 +44,7 @@
 
                     <button
                         type="submit"
-                        class="w-full md:w-auto rounded-md px-4 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600"
+                        class="w-full md:w-auto rounded-md px-6 py-2 bg-gray-700 text-gray-100 hover:bg-gray-600"
                     >
                         Zoeken
                     </button>
